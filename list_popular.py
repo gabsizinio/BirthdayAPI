@@ -70,9 +70,8 @@ def list_popular_series():
     series = series[:-13]
     
     series = [re.sub(r"^\d+\.\s*", "", serie) for serie in series]
-
-    for serie in series:
-        print(serie)
+    
+    return series
 
 def list_popular_movies():
     options = webdriver.ChromeOptions()
@@ -106,11 +105,75 @@ def list_popular_movies():
     movies = movies[:-13]
     
     movies = [re.sub(r"^\d+\.\s*", "", movie) for movie in movies]
+    
+    return movies
 
-    for movie in movies:
-        print(movie)
+def list_popular_games():
+    url = "https://vgsales.fandom.com/wiki/Best_selling_game_franchises"
+
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
+    }
+
+    
+    response = requests.get(url, headers=headers)
+
+    
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, "html.parser")
+
+    
+    table = soup.find("table", {"class": "wikitable"})
+
+    
+    franchises = []
+
+    
+    for row in table.find_all("tr")[1:]: 
+        columns = row.find_all("td")
+
+        # Verifica se há pelo menos duas colunas (índice e nome da franquia)
+        if len(columns) > 1:
+            index = columns[0].text.strip()  
+            franchise_name = columns[1].text.strip()  
 
 
+            if index.isdigit():
+                franchises.append(franchise_name)
+    
+    return franchises
+
+def list_popular_books():
+    urls = ["https://www.goodreads.com/list/show/50.The_Best_Epic_Fantasy_fiction_", "https://www.goodreads.com/list/show/3.Best_Science_Fiction_Fantasy_Books"]
+
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
+    }
+
+    books = []
+
+    for url in urls:
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            html = response.text
+
+            soup = BeautifulSoup(html, "html.parser")
+
+            tags = soup.find_all("span", attrs={"role": "heading"})
+
+            for tag in tags:
+                books.append(tag.text)
+        
+        else:
+            print(f"Erro: {response.status_code}")
+    
+    return books
+        
 #list_popular_animes()
 #list_popular_series()
 #list_popular_movies()
+#list_popular_games()
+list_popular_books()

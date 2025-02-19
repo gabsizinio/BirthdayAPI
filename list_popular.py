@@ -172,8 +172,8 @@ def list_popular_books():
     
     return books
         
-#list_popular_animes()
+#lista = list_popular_animes()
 #list_popular_series()
 #list_popular_movies()
 #list_popular_games()
-list_popular_books()
+#list_popular_books()

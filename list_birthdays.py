@@ -74,9 +74,42 @@ def save_links_to_file(links, filename="links.txt"):
                 file.write(f"{work}: Nenhum link encontrado\n")
     print(f"\n✅ Links salvos em {filename}")
 
+def find_non_category_lines(filename="links.txt"):
+    """Percorre o arquivo e guarda o índice das linhas que não contêm 'Category:Characters'"""
+    non_category_indices = []
+
+    with open(filename, "r", encoding="utf-8") as file:
+        lines = file.readlines()  # Lê todas as linhas do arquivo
+
+        for index, line in enumerate(lines):
+            if "Category:" not in line:
+                non_category_indices.append(index)  # Guarda o índice da linha
+
+    return non_category_indices
+
+
+def remove_duplicate_links(filename="links.txt", output_filename="links_cleaned.txt"):
+    """Remove linhas duplicadas do arquivo, mantendo apenas a primeira ocorrência de cada link."""
+    unique_links = {}
+    
+    with open(filename, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+
+    with open(output_filename, "w", encoding="utf-8") as file:
+        for line in lines:
+            parts = line.strip().split(": ", 1)  # Divide no primeiro ": "
+            if len(parts) == 2:
+                work, link = parts
+                if link not in unique_links:  # Se o link ainda não foi adicionado
+                    unique_links[link] = work
+                    file.write(f"{work}: {link}\n")
+    
+
+
+
 # Próximos passos:
 
-# 1) Armazenar os Links num arquivo TXT
-# 2) Acessar os Links, extrair os personagens mais populares (critério: número de palavras em cada uma das páginas dos mesmos)
-# 3) Com a lista de personagens, abrir a página de cada um e extrair os aniversários
+# 1) Acessar os Links, extrair os personagens mais populares (critério: número de palavras em cada uma das páginas dos mesmos)
+# 2) Com a lista de personagens, abrir a página de cada um e extrair os aniversários
 
+#list_fandom_links()

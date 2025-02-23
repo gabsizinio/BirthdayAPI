@@ -171,8 +171,12 @@ def list_popular_books():
             print(f"Erro: {response.status_code}")
     
     return books
-        
-#lista = list_popular_animes()
+
+l = list_popular_animes()  
+
+for e in l:
+    print(e)
+#list_popular_movies()
 #list_popular_series()
 #list_popular_movies()
 #list_popular_games()

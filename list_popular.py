@@ -172,12 +172,4 @@ def list_popular_books():
     
     return books
 
-l = list_popular_animes()  
 
-for e in l:
-    print(e)
-#list_popular_movies()
-#list_popular_series()
-#list_popular_movies()
-#list_popular_games()
-#list_popular_books()
